@@ -11,7 +11,7 @@ export default function NewGroup() {
       <Content>
         <Icon/>
         <Highlight
-        title="Nova Turma"
+          title="Nova Turma"
         subtitle="Cira a turma para adicionar pessosas"
         />
         <Input
