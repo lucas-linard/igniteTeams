@@ -22,6 +22,7 @@ type RouteParams = {
 }
 
 export default function Players() {
+  const [newPlayerName, setNewPlayerName] = useState("");
   const [team, setTeam] = useState<string>("TIME A");
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
