@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { FlatList } from "react-native";
+import { useEffect, useState, useRef } from "react";
+import { Alert, FlatList, TextInput } from "react-native";
 import { ButtonIcon } from "@components/ButtonIcon";
 import { Header } from "@components/Header";
 import { Highlight } from "@components/Highlight";
@@ -9,7 +9,13 @@ import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 import { Button } from "@components/Button";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { AppError } from "@utils/AppError";
+import { playerAddByGroup } from "@storage/player/playerAddByGroup";
+import { playersGetByGroupAndTeam } from "@storage/player/playersGetByGroupAndTeam";
+import { PlayerStorageDTO } from "@storage/player/PlayerStorageDTO";
+import { playerRemoveByGroup } from "@storage/player/playerRemoveByGroup";
+import { groupRemoveByName } from "@storage/group/groupRemoveByName";
 
 type RouteParams = {
   group: string;
