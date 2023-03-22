@@ -27,6 +27,9 @@ export default function Group() {
     }
   }
 
+  function handleOpenGroup(group: string) {
+    navigation.navigate("Players", { group });
+  }
   useFocusEffect(
     useCallback(() => {
       fetchGroups();
@@ -40,7 +43,7 @@ export default function Group() {
       <FlatList
         data={groups}
         keyExtractor={(item) => item}
-        renderItem={({ item }) => <GroupCard title={item} />}
+        renderItem={({ item }) => <GroupCard title={item} onPress={() => handleOpenGroup(item)}/>}
         contentContainerStyle={groups.length === 0 && { flex: 1 }}
         ListEmptyComponent={
           <ListEmpty message="Que tal cadastrar a primeira turma?" />
