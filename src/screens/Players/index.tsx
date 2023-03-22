@@ -104,8 +104,6 @@ export default function Players() {
     fetchPlayersByTeam();
   }, [team]);
 
-  const route = useRoute()
-  const { group } = route.params as RouteParams
   return (
     <Container>
       <Header showBackButton />
@@ -139,9 +137,14 @@ export default function Players() {
       </HeaderList>
       <FlatList
         data={players}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <PlayerCard name={item} onRemove={() => {}} />
+          <PlayerCard
+            name={item.name}
+            onRemove={() => {
+              handlePlayerRemove(item.name);
+            }}
+          />
         )}
         ListEmptyComponent={<ListEmpty message="Não há pessoas neste time" />}
         showsVerticalScrollIndicator={false}
@@ -150,7 +153,11 @@ export default function Players() {
           players.length === 0 && { flex: 1 },
         ]}
       />
-      <Button title="Remover Turma" type="SECONDARY"/>
+      <Button
+        title="Remover Turma"
+        type="SECONDARY"
+        onPress={handleGroupRemove}
+      />
     </Container>
   );
 }
