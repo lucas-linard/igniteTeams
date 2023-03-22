@@ -111,8 +111,16 @@ export default function Players() {
       <Header showBackButton />
       <Highlight title={group} subtitle="Adicionar a galera" />
       <Form>
-        <Input placeholder="Nome do jogador" autoCorrect={false} />
-        <ButtonIcon icon="add" />
+        <Input
+          inputRef={newPlayerNameInputRef}
+          placeholder="Nome do jogador"
+          autoCorrect={false}
+          onSubmitEditing={handleAddPlayer}
+          returnKeyType="done"
+          onChangeText={setNewPlayerName}
+          value={newPlayerName}
+        />
+        <ButtonIcon icon="add" onPress={handleAddPlayer} />
       </Form>
       <HeaderList>
         <FlatList
