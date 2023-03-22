@@ -23,8 +23,86 @@ type RouteParams = {
 
 export default function Players() {
   const [team, setTeam] = useState<string>("TIME A");
-  const [players, setPlayers] = useState<string[]>([]);
-  
+  const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
+
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { group } = route.params as RouteParams;
+
+  const newPlayerNameInputRef = useRef<TextInput>(null);
+
+  async function handleAddPlayer() {
+    if (newPlayerName.trim().length === 0) {
+      return Alert.alert(
+        "Nova pessoa",
+        "informe o nome da pessoa para adicionar"
+      );
+    }
+    const newPlayer = {
+      name: newPlayerName,
+      team,
+    };
+
+    try {
+      await playerAddByGroup(newPlayer, group);
+
+      newPlayerNameInputRef.current?.blur();
+
+      setNewPlayerName("");
+      fetchPlayersByTeam();
+    } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert("Nova pessoa", error.message);
+      } else {
+        console.log(error);
+        Alert.alert("Nova pessoa", "Não foi possível adicionar a pessoa");
+      }
+    }
+  }
+
+  async function fetchPlayersByTeam() {
+    try {
+      const playersByTeam = await playersGetByGroupAndTeam(group, team);
+      setPlayers(playersByTeam);
+    } catch (error) {
+      Alert.alert(
+        "Pessoas",
+        "Não foi possível carregar as pessoas do time selecionado"
+      );
+      console.log(error);
+    }
+  }
+
+  async function handlePlayerRemove(playerName: string) {
+    try {
+      await playerRemoveByGroup(playerName, group);
+      fetchPlayersByTeam();
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Pessoas", "Não foi possível remover a pessoa");
+    }
+  }
+
+  async function groupRemove() {
+    try {
+      await groupRemoveByName(group);
+      navigation.navigate("Group");
+    } catch (error) {
+      Alert.alert("Grupo", "Não foi possível remover o grupo");
+    }
+  }
+
+  async function handleGroupRemove() {
+    Alert.alert("Remover turma", "Deseja remover a turma?", [
+      { text: "Não", style: "cancel" },
+      { text: "Sim", onPress: () => {groupRemove()} },
+    ]);
+  }
+
+  useEffect(() => {
+    fetchPlayersByTeam();
+  }, [team]);
+
   const route = useRoute()
   const { group } = route.params as RouteParams
   return (
