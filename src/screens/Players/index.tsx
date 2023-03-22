@@ -124,7 +124,7 @@ export default function Players() {
       </Form>
       <HeaderList>
         <FlatList
-          data={["TIME A", "TIME B", "TIME C"]}
+          data={["TIME A", "TIME B"]}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <Filter
